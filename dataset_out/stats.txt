@@ -1,0 +1,26 @@
+=== DATASET STATS ===
+N samples: 30000
+
+Input limits:
+  dl in [0.0, 10.0] mm
+Active tendons (count of non-zero dl):
+  0: 0
+  1: 11932
+  2: 18068
+  3: 0
+
+Error magnitude dXYZ [mm]:
+  mean: 1.7022
+  std : 0.8180
+  p95 : 3.2150
+  max : 5.5309
+
+Axis errors [mm]:
+  dX: mean=0.0230, std=1.0821, max_abs=3.5202
+  dY: mean=0.7672, std=0.9771, max_abs=4.7830
+  dZ: mean=-0.4286, std=0.8173, max_abs=4.2071
+
+Input distribution (hist bins in mm): bins=[0,2,4,6,8,10]
+  dl1: [17196, 3162, 3165, 3237, 3240]
+  dl2: [17018, 3266, 3256, 3215, 3245]
+  dl3: [17286, 3128, 3255, 3164, 3167]
