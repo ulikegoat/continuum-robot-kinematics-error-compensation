@@ -1,0 +1,14 @@
+\begin{table}[h!]
+\centering
+\caption{Porovnanie chýb na testovacej množine (dataset\_phase2\_synth\_new.npz).}
+\label{tab:phase3_test_comparison}
+\begin{tabular}{lrrr}
+\toprule
+Metóda & MAE$_{\|\cdot\|}$ [mm] & RMSE$_{\|\cdot\|}$ [mm] & MAX$_{\|\cdot\|}$ [mm] \\
+\midrule
+PCC & 2.038535 & 2.273449 & 6.122302 \\
+PCC + PolyDeg3 & 0.793852 & 0.861262 & 2.374466 \\
+PCC + NN & 0.795478 & 0.863053 & 2.528298 \\
+\bottomrule
+\end{tabular}
+\end{table}

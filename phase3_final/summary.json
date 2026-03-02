@@ -1,0 +1,63 @@
+{
+  "dataset": "dataset_out\\dataset_phase2_synth_new.npz",
+  "splits": {
+    "seed": 42,
+    "test_size": 0.15,
+    "val_size": 0.15
+  },
+  "boundary": {
+    "thr": 9.0,
+    "rule": "max(dl) >= thr (and optionally active_cnt==2)"
+  },
+  "test_table": [
+    {
+      "method": "PCC",
+      "MAE_norm": 2.038535279870822,
+      "RMSE_norm": 2.2734492292735475,
+      "MAX_norm": 6.122301567997336
+    },
+    {
+      "method": "PCC + PolyDeg3",
+      "MAE_norm": 0.793852333239279,
+      "RMSE_norm": 0.8612615533715657,
+      "MAX_norm": 2.37446554200429
+    },
+    {
+      "method": "PCC + NN",
+      "MAE_norm": 0.7954777516819846,
+      "RMSE_norm": 0.8630528013700447,
+      "MAX_norm": 2.5282981150041417
+    }
+  ],
+  "boundary_table": [
+    {
+      "method": "PCC",
+      "MAE_norm": 3.117807050186403,
+      "RMSE_norm": 3.2251817860935836,
+      "MAX_norm": 6.122301567997336
+    },
+    {
+      "method": "PCC + PolyDeg3",
+      "MAE_norm": 0.797302869036884,
+      "RMSE_norm": 0.863539994207654,
+      "MAX_norm": 2.0959340579765415
+    },
+    {
+      "method": "PCC + NN",
+      "MAE_norm": 0.8002499763023919,
+      "RMSE_norm": 0.8669327672285669,
+      "MAX_norm": 2.090512053790175
+    }
+  ],
+  "nn_artifacts": {
+    "model_pt": "phase3_version_3\\nn_model.pt",
+    "x_scaler": "phase3_version_3\\x_scaler.pkl",
+    "y_scaler": "phase3_version_3\\y_scaler.pkl",
+    "device": "cpu"
+  },
+  "polydeg3": {
+    "degree": 3,
+    "ridge_alpha": 1.0,
+    "retrained_on": "NPZ train split"
+  }
+}
