@@ -2,8 +2,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-CSV_PATH = Path("dataset_out/dataset_new.csv")
-NPZ_PATH = Path("dataset_out/dataset_phase2_synth_new.npz")
+CSV_PATH = Path("dataset_out/dataset_3.csv")
+NPZ_PATH = Path("dataset_out/dataset_3.npz")
 
 def main():
     df = pd.read_csv(CSV_PATH)
@@ -21,6 +21,12 @@ def main():
     print(f"X shape: {X.shape}, Y shape: {Y.shape}")
     print("X ranges [min..max] per col:", X.min(axis=0), X.max(axis=0))
     print("Y ranges [min..max] per col:", Y.min(axis=0), Y.max(axis=0))
+
+    required = ["dl1","dl2","dl3","dX","dY","dZ"]
+
+    for c in required:
+        if c not in df.columns:
+            raise ValueError(f"Missing column {c}")
 
 if __name__ == "__main__":
     main()

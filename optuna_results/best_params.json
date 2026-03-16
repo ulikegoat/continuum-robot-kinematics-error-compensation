@@ -1,0 +1,9 @@
+{
+  "hidden1": 215,
+  "hidden2": 68,
+  "activation": "relu",
+  "lr": 0.00019591496594730567,
+  "batch_size": 256,
+  "weight_decay": 2.5465418104826876e-08,
+  "use_activity_mask": true
+}
