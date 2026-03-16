@@ -8,15 +8,15 @@ import real_model as real
 
 # Dataset parameters
 SEED = 42                  # RNG seed
-N_SAMPLES = 100000         # number of samples
+N_SAMPLES = 20000         # number of samples
 
 DL_MIN = 0.0               # min shortening [mm]
 DL_MAX = 10.0              # max shortening [mm]
 ENFORCE_MAX_2 = True       # max 2 active tendons
 
 OUT_DIR = Path("dataset_out")
-OUT_CSV = OUT_DIR / "dataset_new.csv"
-OUT_STATS = OUT_DIR / "stats_new.txt"
+OUT_CSV = OUT_DIR / "dataset_3.csv"
+OUT_STATS = OUT_DIR / "stats_3.txt"
 
 
 # Configure real model (if available)

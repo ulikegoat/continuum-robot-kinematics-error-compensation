@@ -1,0 +1,19 @@
+{
+  "MAE_xyz": 0.397488534450531,
+  "RMSE_xyz": 0.5014030337333679,
+  "MAX_abs_xyz": 2.008986473083496,
+  "MAE_norm": 0.7976034879684448,
+  "RMSE_norm": 0.8684555292129517,
+  "MAX_norm": 2.218543529510498,
+  "N_train": 14000,
+  "N_val": 3000,
+  "N_test": 3000,
+  "loss": "mse",
+  "activation": "relu",
+  "hidden_sizes": [
+    215,
+    68
+  ],
+  "use_activity_mask": true,
+  "in_dim": 6
+}

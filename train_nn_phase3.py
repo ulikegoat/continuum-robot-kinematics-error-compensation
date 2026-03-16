@@ -23,8 +23,8 @@ from sklearn.preprocessing import StandardScaler
 # -----------------------
 @dataclass
 class Config:
-    data_path: Path = Path("dataset_out/dataset_phase2_synth_new.npz")
-    out_dir: Path = Path("phase3_version_3")
+    data_path: Path = Path("dataset_out/dataset_3.npz")
+    out_dir: Path = Path("phase3_last_16_03_2026")
 
     seed: int = 42
     test_size: float = 0.15
@@ -32,14 +32,14 @@ class Config:
 
     batch_size: int = 256
     epochs: int = 300
-    lr: float = 1e-3
-    weight_decay: float = 1e-6
+    lr: float = 0.00019591496594730567
+    weight_decay: float = 2.5465418104826876e-08
 
     # Feature options
     use_activity_mask: bool = True
     eps_activity: float = 1e-9
 
-    hidden_sizes: tuple[int, ...] = (128, 64)
+    hidden_sizes: tuple[int, ...] = (215, 68)
     activation: str = "relu"
 
     # Loss: MSE or MAE
