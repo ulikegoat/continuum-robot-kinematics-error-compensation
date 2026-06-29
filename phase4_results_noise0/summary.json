@@ -1,0 +1,88 @@
+{
+  "phase": "phase4_inverse_kinematics",
+  "real_model_used_inside_ik": false,
+  "methods_compared": [
+    "PCC IK",
+    "PCC+NN IK"
+  ],
+  "n_targets": 50,
+  "target_generation": {
+    "seed": 42,
+    "valid_dl_max_active_tendons": 2,
+    "noise_sigma": 0.0,
+    "deterministic": true
+  },
+  "constraints": {
+    "dl_min": 0.0,
+    "dl_max": 10.0,
+    "max_active_tendons": 2
+  },
+  "solver": {
+    "preferred": "scipy.optimize.least_squares",
+    "scipy_available": true,
+    "fallback": "numerical Jacobian + damped least squares",
+    "grid_n": 9,
+    "n_starts_per_mode": 3,
+    "max_nfev": 120
+  },
+  "canonical_phase3_model": {
+    "model_path": "phase3_last_16_03_2026\\nn_model.pt",
+    "x_scaler_path": "phase3_last_16_03_2026\\x_scaler.pkl",
+    "y_scaler_path": "phase3_last_16_03_2026\\y_scaler.pkl",
+    "device": "cpu"
+  },
+  "real_model_parameters": {
+    "alpha_per_m": 3.5,
+    "beta_rad_per_m": 3.5,
+    "offset": [
+      0.5,
+      0.5,
+      0.3
+    ],
+    "sigma_noise": 0.0,
+    "theta_max_deg": 95.0
+  },
+  "outputs": {
+    "results_csv": "phase4_results_noise0\\phase4_results.csv",
+    "metrics_csv": "phase4_results_noise0\\comparison_metrics.csv",
+    "summary_json": "phase4_results_noise0\\summary.json",
+    "error_hist_png": "phase4_results_noise0\\error_hist.png",
+    "target_vs_reached_3d_png": "phase4_results_noise0\\target_vs_reached_3d.png",
+    "error_vs_target_index_png": "phase4_results_noise0\\error_vs_target_index.png",
+    "error_vs_dl_norm_png": "phase4_results_noise0\\error_vs_dl_norm.png"
+  },
+  "metrics": [
+    {
+      "method": "PCC IK",
+      "N": 50,
+      "MAE_norm": 1.425769629365898,
+      "RMSE_norm": 1.5911298865270778,
+      "MAX_norm": 3.489731509857539,
+      "MAE_X": 0.7228674701969166,
+      "MAE_Y": 0.8614740203322572,
+      "MAE_Z": 0.6202681620906199,
+      "RMSE_X": 0.8721234036250115,
+      "RMSE_Y": 1.0400918659330265,
+      "RMSE_Z": 0.8302433348537961,
+      "MAX_abs_X": 1.5506154862011243,
+      "MAX_abs_Y": 2.771717419156033,
+      "MAX_abs_Z": 2.093695399937573
+    },
+    {
+      "method": "PCC+NN IK",
+      "N": 50,
+      "MAE_norm": 0.05760914799532516,
+      "RMSE_norm": 0.06500603253156512,
+      "MAX_norm": 0.12745174377115628,
+      "MAE_X": 0.035762116791467354,
+      "MAE_Y": 0.03184005652788199,
+      "MAE_Z": 0.019763662712814777,
+      "RMSE_X": 0.04637222570499535,
+      "RMSE_Y": 0.03897213839306765,
+      "RMSE_Z": 0.02359180742824622,
+      "MAX_abs_X": 0.11677956328221839,
+      "MAX_abs_Y": 0.07657873601949916,
+      "MAX_abs_Z": 0.06275771947288433
+    }
+  ]
+}

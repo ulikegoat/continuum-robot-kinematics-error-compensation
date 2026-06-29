@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+scikit-learn
+torch
+joblib
+scipy
+optuna
+PySide6
+pyqtgraph
