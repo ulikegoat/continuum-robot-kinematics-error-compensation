@@ -18,6 +18,44 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 
+FALLBACK_REAL_MODEL_PARAMS = {
+    "alpha_per_m": 3.5,
+    "beta_rad_per_m": 3.5,
+    "offset": [0.5, 0.5, 0.3],
+    "sigma_noise": 0.5,
+    "theta_max_deg": 95.0,
+}
+
+
+def gaussian_noise_floor_norm(real_model_params: dict) -> float:
+    sigma = float(real_model_params["sigma_noise"])
+    return float(np.sqrt(3.0) * sigma)
+
+
+def load_dataset_provenance(data_path: Path) -> dict:
+    provenance_path = data_path.with_name("dataset_3_provenance.json")
+    if not provenance_path.exists():
+        return {
+            "path": str(provenance_path),
+            "available": False,
+            "real_model_parameters": FALLBACK_REAL_MODEL_PARAMS,
+            "estimated_gaussian_noise_floor_rmse_norm_mm": gaussian_noise_floor_norm(FALLBACK_REAL_MODEL_PARAMS),
+        }
+
+    with open(provenance_path, "r", encoding="utf-8") as f:
+        provenance = json.load(f)
+    provenance["path"] = str(provenance_path)
+    provenance["available"] = True
+
+    real_params = provenance.get("real_model_parameters", FALLBACK_REAL_MODEL_PARAMS)
+    provenance.setdefault("real_model_parameters", real_params)
+    provenance.setdefault(
+        "estimated_gaussian_noise_floor_rmse_norm_mm",
+        gaussian_noise_floor_norm(real_params),
+    )
+    return provenance
+
+
 # -----------------------
 # Config
 # -----------------------
@@ -150,6 +188,7 @@ def eval_model(model: nn.Module, loader: DataLoader, device: str) -> tuple[np.nd
 def train(cfg: Config):
     set_seed(cfg.seed)
     cfg.out_dir.mkdir(parents=True, exist_ok=True)
+    dataset_provenance = load_dataset_provenance(cfg.data_path)
 
     # ---- Load NPZ (X,Y)
     data = np.load(cfg.data_path)
@@ -218,6 +257,8 @@ def train(cfg: Config):
     # ---- Training with early stopping
     best_val = float("inf")
     best_path = cfg.out_dir / "nn_model.pt"
+    x_scaler_path = cfg.out_dir / "x_scaler.pkl"
+    y_scaler_path = cfg.out_dir / "y_scaler.pkl"
     history = {"train_loss": [], "val_loss": []}
     patience_left = cfg.patience
 
@@ -295,6 +336,21 @@ def train(cfg: Config):
     e_norm = vec_norm_err(Yt, Yp)
 
     metrics = {
+        "dataset_path": str(cfg.data_path),
+        "model_path": str(best_path),
+        "x_scaler_path": str(x_scaler_path),
+        "y_scaler_path": str(y_scaler_path),
+        "seed": int(cfg.seed),
+        "split_sizes": {
+            "train": int(X_train.shape[0]),
+            "val": int(X_val.shape[0]),
+            "test": int(X_test.shape[0]),
+        },
+        "real_model_parameters": dataset_provenance["real_model_parameters"],
+        "estimated_gaussian_noise_floor_rmse_norm_mm": dataset_provenance[
+            "estimated_gaussian_noise_floor_rmse_norm_mm"
+        ],
+        "dataset_provenance": dataset_provenance,
         "MAE_xyz": mae(Yt, Yp),
         "RMSE_xyz": rmse(Yt, Yp),
         "MAX_abs_xyz": max_err(Yt, Yp),
@@ -312,8 +368,8 @@ def train(cfg: Config):
     }
 
     # ---- Save artifacts
-    joblib.dump(x_scaler, cfg.out_dir / "x_scaler.pkl")
-    joblib.dump(y_scaler, cfg.out_dir / "y_scaler.pkl")
+    joblib.dump(x_scaler, x_scaler_path)
+    joblib.dump(y_scaler, y_scaler_path)
 
     with open(cfg.out_dir / "metrics.json", "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)

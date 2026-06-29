@@ -23,6 +23,44 @@ import torch
 import torch.nn as nn
 
 
+FALLBACK_REAL_MODEL_PARAMS = {
+    "alpha_per_m": 3.5,
+    "beta_rad_per_m": 3.5,
+    "offset": [0.5, 0.5, 0.3],
+    "sigma_noise": 0.5,
+    "theta_max_deg": 95.0,
+}
+
+
+def gaussian_noise_floor_norm(real_model_params: dict) -> float:
+    sigma = float(real_model_params["sigma_noise"])
+    return float(np.sqrt(3.0) * sigma)
+
+
+def load_dataset_provenance(npz_path: Path) -> dict:
+    provenance_path = npz_path.with_name("dataset_3_provenance.json")
+    if not provenance_path.exists():
+        return {
+            "path": str(provenance_path),
+            "available": False,
+            "real_model_parameters": FALLBACK_REAL_MODEL_PARAMS,
+            "estimated_gaussian_noise_floor_rmse_norm_mm": gaussian_noise_floor_norm(FALLBACK_REAL_MODEL_PARAMS),
+        }
+
+    with open(provenance_path, "r", encoding="utf-8") as f:
+        provenance = json.load(f)
+    provenance["path"] = str(provenance_path)
+    provenance["available"] = True
+
+    real_params = provenance.get("real_model_parameters", FALLBACK_REAL_MODEL_PARAMS)
+    provenance.setdefault("real_model_parameters", real_params)
+    provenance.setdefault(
+        "estimated_gaussian_noise_floor_rmse_norm_mm",
+        gaussian_noise_floor_norm(real_params),
+    )
+    return provenance
+
+
 # -----------------------
 # Config
 # -----------------------
@@ -33,13 +71,13 @@ class Cfg:
     val_size: float = 0.15  # kept for split consistency
 
     # Dataset: X (dl1..dl3), Y = (REAL - PCC)
-    npz_path: Path = Path("dataset_out/dataset_phase2_synth_new.npz")
+    npz_path: Path = Path("dataset_out/dataset_3.npz")
 
     # NN artifacts
-    nn_dir: Path = Path("phase3_version_3")
-    nn_model_pt: Path = Path("phase3_version_3/nn_model.pt")
-    x_scaler_pkl: Path = Path("phase3_version_3/x_scaler.pkl")
-    y_scaler_pkl: Path = Path("phase3_version_3/y_scaler.pkl")
+    nn_dir: Path = Path("phase3_last_16_03_2026")
+    nn_model_pt: Path = Path("phase3_last_16_03_2026/nn_model.pt")
+    x_scaler_pkl: Path = Path("phase3_last_16_03_2026/x_scaler.pkl")
+    y_scaler_pkl: Path = Path("phase3_last_16_03_2026/y_scaler.pkl")
 
     # Output directory
     out_dir: Path = Path("phase3_final")
@@ -252,6 +290,7 @@ def main():
     cfg = Cfg()
     set_seed(cfg.seed)
     cfg.out_dir.mkdir(parents=True, exist_ok=True)
+    dataset_provenance = load_dataset_provenance(cfg.npz_path)
 
     if not cfg.npz_path.exists():
         raise FileNotFoundError(f"Missing NPZ: {cfg.npz_path.resolve()}")
@@ -278,6 +317,11 @@ def main():
     X_train, X_val, Y_train, Y_val = train_test_split(
         X_trainval, Y_trainval, test_size=val_rel, random_state=cfg.seed, shuffle=True
     )
+    split_sizes = {
+        "train": int(X_train.shape[0]),
+        "val": int(X_val.shape[0]),
+        "test": int(X_test.shape[0]),
+    }
 
     # 1) PCC baseline: residual = -Y
     err_test_pcc = -Y_test
@@ -323,9 +367,11 @@ def main():
 
     active_cnt = (np.abs(X_test) > cfg.eps_activity).sum(axis=1)
     boundary_mask = boundary_mask & (active_cnt == 2)
+    boundary_rule = f"max(dl) >= {cfg.boundary_thr:.1f} and active_cnt == 2"
 
     if int(boundary_mask.sum()) < 200:
         boundary_mask = dlmax >= cfg.boundary_thr
+        boundary_rule = f"max(dl) >= {cfg.boundary_thr:.1f}"
 
     err_b_pcc = err_test_pcc[boundary_mask]
     err_b_poly = err_test_poly[boundary_mask]
@@ -371,8 +417,24 @@ def main():
     # JSON summary
     summary = {
         "dataset": str(cfg.npz_path),
-        "splits": {"seed": cfg.seed, "test_size": cfg.test_size, "val_size": cfg.val_size},
-        "boundary_thr": cfg.boundary_thr,
+        "model": str(cfg.nn_model_pt),
+        "seed": int(cfg.seed),
+        "splits": {
+            "seed": cfg.seed,
+            "test_size": cfg.test_size,
+            "val_size": cfg.val_size,
+            "sizes": split_sizes,
+        },
+        "real_model_parameters": dataset_provenance["real_model_parameters"],
+        "estimated_gaussian_noise_floor_rmse_norm_mm": dataset_provenance[
+            "estimated_gaussian_noise_floor_rmse_norm_mm"
+        ],
+        "dataset_provenance": dataset_provenance,
+        "boundary": {
+            "thr": cfg.boundary_thr,
+            "rule": boundary_rule,
+            "N": int(boundary_mask.sum()),
+        },
         "test_table": df_test_compact.to_dict(orient="records"),
         "boundary_table": df_b_compact.to_dict(orient="records"),
         "nn_artifacts": {

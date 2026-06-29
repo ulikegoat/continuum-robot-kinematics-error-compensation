@@ -1,0 +1,20 @@
+{
+  "dataset_csv": "dataset_out\\dataset_3.csv",
+  "seed": 42,
+  "n_samples": 20000,
+  "dl_min": 0.0,
+  "dl_max": 10.0,
+  "enforce_max_2": true,
+  "real_model_parameters": {
+    "alpha_per_m": 3.5,
+    "beta_rad_per_m": 3.5,
+    "offset": [
+      0.5,
+      0.5,
+      0.3
+    ],
+    "sigma_noise": 0.5,
+    "theta_max_deg": 95.0
+  },
+  "estimated_gaussian_noise_floor_rmse_norm_mm": 0.8660254037844386
+}
