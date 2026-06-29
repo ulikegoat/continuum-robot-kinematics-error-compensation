@@ -1,63 +1,104 @@
 {
-  "dataset": "dataset_out\\dataset_phase2_synth_new.npz",
+  "dataset": "dataset_out\\dataset_3.npz",
+  "model": "phase3_last_16_03_2026\\nn_model.pt",
+  "seed": 42,
   "splits": {
     "seed": 42,
     "test_size": 0.15,
-    "val_size": 0.15
+    "val_size": 0.15,
+    "sizes": {
+      "train": 14000,
+      "val": 3000,
+      "test": 3000
+    }
+  },
+  "real_model_parameters": {
+    "alpha_per_m": 3.5,
+    "beta_rad_per_m": 3.5,
+    "offset": [
+      0.5,
+      0.5,
+      0.3
+    ],
+    "sigma_noise": 0.5,
+    "theta_max_deg": 95.0
+  },
+  "estimated_gaussian_noise_floor_rmse_norm_mm": 0.8660254037844386,
+  "dataset_provenance": {
+    "dataset_csv": "dataset_out\\dataset_3.csv",
+    "seed": 42,
+    "n_samples": 20000,
+    "dl_min": 0.0,
+    "dl_max": 10.0,
+    "enforce_max_2": true,
+    "real_model_parameters": {
+      "alpha_per_m": 3.5,
+      "beta_rad_per_m": 3.5,
+      "offset": [
+        0.5,
+        0.5,
+        0.3
+      ],
+      "sigma_noise": 0.5,
+      "theta_max_deg": 95.0
+    },
+    "estimated_gaussian_noise_floor_rmse_norm_mm": 0.8660254037844386,
+    "path": "dataset_out\\dataset_3_provenance.json",
+    "available": true
   },
   "boundary": {
     "thr": 9.0,
-    "rule": "max(dl) >= thr (and optionally active_cnt==2)"
+    "rule": "max(dl) >= 9.0 and active_cnt == 2",
+    "N": 717
   },
   "test_table": [
     {
       "method": "PCC",
-      "MAE_norm": 2.038535279870822,
-      "RMSE_norm": 2.2734492292735475,
-      "MAX_norm": 6.122301567997336
+      "MAE_norm": 1.9919678653990487,
+      "RMSE_norm": 2.226582485218169,
+      "MAX_norm": 5.642001887818867
     },
     {
       "method": "PCC + PolyDeg3",
-      "MAE_norm": 0.793852333239279,
-      "RMSE_norm": 0.8612615533715657,
-      "MAX_norm": 2.37446554200429
+      "MAE_norm": 0.7990117229638529,
+      "RMSE_norm": 0.86830875604855,
+      "MAX_norm": 2.1964232806737742
     },
     {
       "method": "PCC + NN",
-      "MAE_norm": 0.7954777516819846,
-      "RMSE_norm": 0.8630528013700447,
-      "MAX_norm": 2.5282981150041417
+      "MAE_norm": 0.7995548753573282,
+      "RMSE_norm": 0.8689624219600806,
+      "MAX_norm": 2.199613175772691
     }
   ],
   "boundary_table": [
     {
       "method": "PCC",
-      "MAE_norm": 3.117807050186403,
-      "RMSE_norm": 3.2251817860935836,
-      "MAX_norm": 6.122301567997336
+      "MAE_norm": 3.0622706591216717,
+      "RMSE_norm": 3.169212443313752,
+      "MAX_norm": 5.642001887818867
     },
     {
       "method": "PCC + PolyDeg3",
-      "MAE_norm": 0.797302869036884,
-      "RMSE_norm": 0.863539994207654,
-      "MAX_norm": 2.0959340579765415
+      "MAE_norm": 0.8038808717073082,
+      "RMSE_norm": 0.8746373901680113,
+      "MAX_norm": 2.1141183919093924
     },
     {
       "method": "PCC + NN",
-      "MAE_norm": 0.8002499763023919,
-      "RMSE_norm": 0.8669327672285669,
-      "MAX_norm": 2.090512053790175
+      "MAE_norm": 0.804358970025264,
+      "RMSE_norm": 0.8745286155142394,
+      "MAX_norm": 2.051057467272342
     }
   ],
   "nn_artifacts": {
-    "model_pt": "phase3_version_3\\nn_model.pt",
-    "x_scaler": "phase3_version_3\\x_scaler.pkl",
-    "y_scaler": "phase3_version_3\\y_scaler.pkl",
+    "model_pt": "phase3_last_16_03_2026\\nn_model.pt",
+    "x_scaler": "phase3_last_16_03_2026\\x_scaler.pkl",
+    "y_scaler": "phase3_last_16_03_2026\\y_scaler.pkl",
     "device": "cpu"
   },
   "polydeg3": {
     "degree": 3,
-    "ridge_alpha": 1.0,
-    "retrained_on": "NPZ train split"
+    "ridge_alpha": 1.0
   }
 }

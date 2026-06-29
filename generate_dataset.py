@@ -1,3 +1,4 @@
+import json
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -17,17 +18,32 @@ ENFORCE_MAX_2 = True       # max 2 active tendons
 OUT_DIR = Path("dataset_out")
 OUT_CSV = OUT_DIR / "dataset_3.csv"
 OUT_STATS = OUT_DIR / "stats_3.txt"
+OUT_PROVENANCE = OUT_DIR / "dataset_3_provenance.json"
+
+REAL_MODEL_PARAMS = {
+    "alpha_per_m": 3.5,
+    "beta_rad_per_m": 3.5,
+    "offset": [0.5, 0.5, 0.3],
+    "sigma_noise": 0.5,
+    "theta_max_deg": 95.0,
+}
 
 
 # Configure real model (if available)
-try:
-    real.alpha_per_m = 3.5
-    real.beta_rad_per_m = 3.5
-    real.offset = np.array([0.5, 0.5, 0.3], dtype=float)
-    real.sigma_noise = 0.5
-    real.theta_max = np.radians(95)
-except Exception:
-    pass
+def apply_real_model_params():
+    real.alpha_per_m = REAL_MODEL_PARAMS["alpha_per_m"]
+    real.beta_rad_per_m = REAL_MODEL_PARAMS["beta_rad_per_m"]
+    real.offset = np.array(REAL_MODEL_PARAMS["offset"], dtype=float)
+    real.sigma_noise = REAL_MODEL_PARAMS["sigma_noise"]
+    real.theta_max = np.radians(REAL_MODEL_PARAMS["theta_max_deg"])
+
+
+apply_real_model_params()
+
+
+def gaussian_noise_floor_norm() -> float:
+    # Expected RMSE of the 3D Euclidean residual norm for iid per-axis Gaussian noise.
+    return float(np.sqrt(3.0) * REAL_MODEL_PARAMS["sigma_noise"])
 
 
 # Sample dl with ≤2 active tendons
@@ -91,6 +107,8 @@ def real_tip_xyz(dl1, dl2, dl3, enforce_max2: bool):
 
 # Generate dataset: dl → (PCC, REAL, error)
 def generate_dataset():
+    apply_real_model_params()
+    np.random.seed(SEED)
     rng = np.random.default_rng(SEED)
     dls = sample_dls(N_SAMPLES, DL_MIN, DL_MAX, rng)
 
@@ -132,6 +150,8 @@ def make_stats_text(df: pd.DataFrame) -> str:
 
     text.append("Input limits:")
     text.append(f"  dl in [{DL_MIN}, {DL_MAX}] mm")
+    text.append(f"Seed: {SEED}")
+    text.append(f"Estimated Gaussian noise floor RMSE_norm [mm]: {gaussian_noise_floor_norm():.4f}")
 
     text.append("Active tendons:")
     for k in [0, 1, 2, 3]:
@@ -160,6 +180,19 @@ def make_stats_text(df: pd.DataFrame) -> str:
     return "\n".join(text)
 
 
+def make_provenance(df: pd.DataFrame) -> dict:
+    return {
+        "dataset_csv": str(OUT_CSV),
+        "seed": SEED,
+        "n_samples": int(len(df)),
+        "dl_min": DL_MIN,
+        "dl_max": DL_MAX,
+        "enforce_max_2": ENFORCE_MAX_2,
+        "real_model_parameters": REAL_MODEL_PARAMS,
+        "estimated_gaussian_noise_floor_rmse_norm_mm": gaussian_noise_floor_norm(),
+    }
+
+
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -168,9 +201,14 @@ def main():
 
     stats = make_stats_text(df)
     OUT_STATS.write_text(stats, encoding="utf-8")
+    OUT_PROVENANCE.write_text(
+        json.dumps(make_provenance(df), indent=2),
+        encoding="utf-8",
+    )
 
     print(f"Saved dataset: {OUT_CSV} (rows={len(df)})")
     print(f"Saved stats  : {OUT_STATS}")
+    print(f"Saved provenance: {OUT_PROVENANCE}")
 
 
 if __name__ == "__main__":

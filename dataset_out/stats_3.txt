@@ -3,6 +3,8 @@ N samples: 20000
 
 Input limits:
   dl in [0.0, 10.0] mm
+Seed: 42
+Estimated Gaussian noise floor RMSE_norm [mm]: 0.8660
 Active tendons:
   0: 0
   1: 7992
@@ -10,15 +12,15 @@ Active tendons:
   3: 0
 
 Error magnitude dXYZ [mm]:
-  mean: 2.0156
-  std : 1.0051
-  p95 : 3.8357
-  max : 6.0968
+  mean: 2.0160
+  std : 1.0079
+  p95 : 3.8423
+  max : 5.9636
 
 Axis errors [mm]:
-  dX: mean=-0.0950, std=1.2178, max_abs=3.6773
-  dY: mean=0.8482, std=1.1551, max_abs=4.9812
-  dZ: mean=-0.7387, std=0.9908, max_abs=4.1740
+  dX: mean=-0.0993, std=1.2199, max_abs=3.9054
+  dY: mean=0.8509, std=1.1579, max_abs=4.9245
+  dZ: mean=-0.7385, std=0.9861, max_abs=4.3611
 
 Input histogram bins [mm]: [0,2,4,6,8,10]
   dl1: [11015, 1717, 1773, 1899, 3596]

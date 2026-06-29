@@ -1,10 +1,54 @@
 {
-  "MAE_xyz": 0.397488534450531,
-  "RMSE_xyz": 0.5014030337333679,
-  "MAX_abs_xyz": 2.008986473083496,
-  "MAE_norm": 0.7976034879684448,
-  "RMSE_norm": 0.8684555292129517,
-  "MAX_norm": 2.218543529510498,
+  "dataset_path": "dataset_out\\dataset_3.npz",
+  "model_path": "phase3_last_16_03_2026\\nn_model.pt",
+  "x_scaler_path": "phase3_last_16_03_2026\\x_scaler.pkl",
+  "y_scaler_path": "phase3_last_16_03_2026\\y_scaler.pkl",
+  "seed": 42,
+  "split_sizes": {
+    "train": 14000,
+    "val": 3000,
+    "test": 3000
+  },
+  "real_model_parameters": {
+    "alpha_per_m": 3.5,
+    "beta_rad_per_m": 3.5,
+    "offset": [
+      0.5,
+      0.5,
+      0.3
+    ],
+    "sigma_noise": 0.5,
+    "theta_max_deg": 95.0
+  },
+  "estimated_gaussian_noise_floor_rmse_norm_mm": 0.8660254037844386,
+  "dataset_provenance": {
+    "dataset_csv": "dataset_out\\dataset_3.csv",
+    "seed": 42,
+    "n_samples": 20000,
+    "dl_min": 0.0,
+    "dl_max": 10.0,
+    "enforce_max_2": true,
+    "real_model_parameters": {
+      "alpha_per_m": 3.5,
+      "beta_rad_per_m": 3.5,
+      "offset": [
+        0.5,
+        0.5,
+        0.3
+      ],
+      "sigma_noise": 0.5,
+      "theta_max_deg": 95.0
+    },
+    "estimated_gaussian_noise_floor_rmse_norm_mm": 0.8660254037844386,
+    "path": "dataset_out\\dataset_3_provenance.json",
+    "available": true
+  },
+  "MAE_xyz": 0.3998813033103943,
+  "RMSE_xyz": 0.5016956925392151,
+  "MAX_abs_xyz": 1.9751505851745605,
+  "MAE_norm": 0.7995548248291016,
+  "RMSE_norm": 0.8689624667167664,
+  "MAX_norm": 2.199613332748413,
   "N_train": 14000,
   "N_val": 3000,
   "N_test": 3000,
