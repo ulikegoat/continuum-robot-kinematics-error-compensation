@@ -128,3 +128,25 @@ Noisy robustness benchmark, `phase4_results_noise05/comparison_metrics.csv`:
 ![GUI for continuum robot kinematic error compensation](pic_dp/ex1.jpg)
 ![Residual Error Vectors in XYZ (TEST)](phase3_final/error_scatter3d_test.png)
 ![Error Norm Histogram (TEST)](phase3_final/errors_hist_test.png)
+
+## Phase 4 Figures
+
+### Deterministic benchmark (`phase4_results_noise0/`)
+
+Target vs reached positions in 3D:
+
+![Phase 4 deterministic target vs reached 3D](phase4_results_noise0/target_vs_reached_3d.png)
+
+Error norm histogram:
+
+![Phase 4 deterministic error histogram](phase4_results_noise0/error_hist.png)
+
+### Noisy robustness benchmark (`phase4_results_noise05/`)
+
+Target vs reached positions in 3D:
+
+![Phase 4 noisy target vs reached 3D](phase4_results_noise05/target_vs_reached_3d.png)
+
+Error norm histogram:
+
+![Phase 4 noisy error histogram](phase4_results_noise05/error_hist.png)
