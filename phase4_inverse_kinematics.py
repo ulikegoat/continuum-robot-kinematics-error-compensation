@@ -374,7 +374,7 @@ def inverse_kinematics(
 
 
 def configure_real_model(noise_sigma: float):
-    # real_model is used only by target generation and final command evaluation.
+    # Synthetic reference model; used only for targets and final command evaluation.
     import real_model as real
 
     real.alpha_per_m = REAL_MODEL_PARAMS["alpha_per_m"]
@@ -526,6 +526,7 @@ def run_phase4_benchmark(
 
     summary = {
         "phase": "phase4_inverse_kinematics",
+        "reference_model": "synthetic reference model (perturbed PCC; no physical robot data)",
         "real_model_used_inside_ik": False,
         "methods_compared": ["PCC IK", "PCC+NN IK"],
         "n_targets": int(n_targets),
@@ -574,7 +575,7 @@ def save_plots(results: pd.DataFrame, out_dir: Path) -> None:
     plt.figure()
     for method, sub in results.groupby("method"):
         plt.hist(sub["err_norm"], bins=30, alpha=0.55, label=method)
-    plt.xlabel("||REAL(dl_ik) - target|| [mm]")
+    plt.xlabel("||synthetic reference(dl_ik) - target|| [mm]")
     plt.ylabel("count")
     plt.legend()
     plt.tight_layout()
@@ -630,6 +631,7 @@ def solve_single_target(target: Iterable[float], cfg: IKConfig) -> dict:
     ]
     return {
         "phase": "phase4_inverse_kinematics_single_target",
+        "reference_model": "synthetic reference model (perturbed PCC; no physical robot data)",
         "real_model_used_inside_ik": False,
         "methods_compared": ["PCC IK", "PCC+NN IK"],
         "target_xyz": list(map(float, target)),

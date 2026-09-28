@@ -70,7 +70,7 @@ class Cfg:
     test_size: float = 0.15
     val_size: float = 0.15  # kept for split consistency
 
-    # Dataset: X (dl1..dl3), Y = (REAL - PCC)
+    # Dataset: X (dl1..dl3), Y = (synthetic reference - PCC)
     npz_path: Path = Path("dataset_out/dataset_3.npz")
 
     # NN artifacts
@@ -191,7 +191,7 @@ def nn_predict_dx(
     y_scaler_pkl: Path,
     device: str,
 ) -> np.ndarray:
-    # Predict (REAL - PCC)
+    # Predict (synthetic reference - PCC)
     x_scaler = joblib.load(x_scaler_pkl)
     y_scaler = joblib.load(y_scaler_pkl)
 

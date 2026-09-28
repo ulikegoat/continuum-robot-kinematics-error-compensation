@@ -1,0 +1,13 @@
+\begin{table}
+\caption{Feedforward NN architecture comparison (mm).}
+\label{tab:summer_architecture}
+\begin{tabular}{llrrrrrrrrrrrrrrr}
+\toprule
+architecture & hidden_layers & MAE_X & RMSE_X & MAX_abs_X & MAE_Y & RMSE_Y & MAX_abs_Y & MAE_Z & RMSE_Z & MAX_abs_Z & N & MAE_norm & RMSE_norm & Median_norm & P95_norm & MAX_norm \\
+\midrule
+small & [32, 32] & 0.398600 & 0.498955 & 1.591772 & 0.399238 & 0.502975 & 2.134756 & 0.408182 & 0.507090 & 1.513462 & 2000 & 0.804880 & 0.871252 & 0.778165 & 1.399680 & 2.327911 \\
+medium & [128, 64] & 0.398213 & 0.498592 & 1.579381 & 0.398360 & 0.501656 & 2.105145 & 0.406362 & 0.505460 & 1.608219 & 2000 & 0.802938 & 0.869335 & 0.772476 & 1.406135 & 2.280766 \\
+large & [256, 128, 64] & 0.399024 & 0.499114 & 1.576482 & 0.400290 & 0.503968 & 2.172981 & 0.405986 & 0.505054 & 1.565281 & 2000 & 0.803858 & 0.870734 & 0.778169 & 1.397376 & 2.360755 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -8,3 +8,4 @@ scipy
 optuna
 PySide6
 pyqtgraph
+Jinja2
