@@ -1,0 +1,15 @@
+\begin{table}
+\caption{Canonical NN evaluated under synthetic measurement noise (mm).}
+\label{tab:summer_noise}
+\begin{tabular}{rllrrrrrrrrrrrrrrr}
+\toprule
+sigma_mm & method & training_mode & MAE_X & RMSE_X & MAX_abs_X & MAE_Y & RMSE_Y & MAX_abs_Y & MAE_Z & RMSE_Z & MAX_abs_Z & N & MAE_norm & RMSE_norm & Median_norm & P95_norm & MAX_norm \\
+\midrule
+0.000000 & PCC+NN & evaluated_only & 0.028518 & 0.039120 & 0.181533 & 0.030291 & 0.037029 & 0.148864 & 0.034015 & 0.043714 & 0.195151 & 2000 & 0.062491 & 0.069372 & 0.056445 & 0.120454 & 0.245513 \\
+0.200000 & PCC+NN & evaluated_only & 0.157966 & 0.197228 & 0.670053 & 0.158465 & 0.200535 & 0.784688 & 0.161363 & 0.202580 & 0.769800 & 2000 & 0.318873 & 0.346629 & 0.308127 & 0.567772 & 0.846630 \\
+0.500000 & PCC+NN & evaluated_only & 0.387469 & 0.483598 & 1.677680 & 0.392674 & 0.495675 & 2.045138 & 0.396099 & 0.496908 & 1.815105 & 2000 & 0.784329 & 0.852337 & 0.755865 & 1.385394 & 2.180351 \\
+0.800000 & PCC+NN & evaluated_only & 0.618263 & 0.771707 & 2.685308 & 0.627861 & 0.792358 & 3.305588 & 0.632560 & 0.793361 & 2.920425 & 2000 & 1.252718 & 1.361170 & 1.208753 & 2.212652 & 3.514583 \\
+1.000000 & PCC+NN & evaluated_only & 0.772332 & 0.963977 & 3.357059 & 0.784821 & 0.990320 & 4.145887 & 0.790374 & 0.991236 & 3.657305 & 2000 & 1.565294 & 1.700745 & 1.509295 & 2.762952 & 4.404127 \\
+\bottomrule
+\end{tabular}
+\end{table}

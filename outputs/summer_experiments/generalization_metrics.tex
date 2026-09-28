@@ -1,0 +1,14 @@
+\begin{table}
+\caption{Interpolation and extrapolation in tendon shortening (mm).}
+\label{tab:summer_generalization}
+\begin{tabular}{llrrrrrrrrrrrrrrr}
+\toprule
+test_range & method & MAE_X & RMSE_X & MAX_abs_X & MAE_Y & RMSE_Y & MAX_abs_Y & MAE_Z & RMSE_Z & MAX_abs_Z & N & MAE_norm & RMSE_norm & Median_norm & P95_norm & MAX_norm \\
+\midrule
+inside_0_8 & PCC & 0.729328 & 0.846661 & 1.751943 & 0.906908 & 1.093830 & 2.724630 & 0.420183 & 0.526271 & 1.328552 & 1000 & 1.348383 & 1.479953 & 1.251646 & 2.468678 & 3.242957 \\
+inside_0_8 & PCC+NN & 0.003238 & 0.004599 & 0.034799 & 0.003843 & 0.005260 & 0.030492 & 0.002632 & 0.003885 & 0.032382 & 1000 & 0.006520 & 0.007994 & 0.005408 & 0.014326 & 0.056474 \\
+outside_8_10 & PCC & 1.415161 & 1.447708 & 2.013826 & 1.681085 & 1.909850 & 3.559599 & 1.795496 & 1.862124 & 2.711270 & 1000 & 2.963311 & 3.034945 & 2.873074 & 4.318111 & 4.596224 \\
+outside_8_10 & PCC+NN & 0.101833 & 0.126169 & 0.295531 & 0.074869 & 0.105001 & 0.254388 & 0.168453 & 0.200807 & 0.453004 & 1000 & 0.221034 & 0.259360 & 0.206914 & 0.460891 & 0.577039 \\
+\bottomrule
+\end{tabular}
+\end{table}

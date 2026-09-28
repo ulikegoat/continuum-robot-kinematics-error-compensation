@@ -1,0 +1,116 @@
+{
+  "reference_model": "synthetic reference model (perturbed PCC; no physical robot data)",
+  "real_model_used_inside_ik": false,
+  "methods_compared": [
+    "PCC IK",
+    "PCC+NN IK"
+  ],
+  "n_targets": 50,
+  "n_boundary_large_bend": 15,
+  "seed": 42,
+  "noise_sigma_mm": 0.0,
+  "noise_protocol": "Independent target and reached Gaussian noise; shared reached-noise draw across methods for each target",
+  "error_definition": "p_reached = f_syn(dl_IK); e_IK = p_reached - p_target",
+  "trajectory_plot_order": "sample index; targets are sampled points, not a continuous planned path",
+  "constraints": {
+    "dl_min": 0.0,
+    "dl_max": 10.0,
+    "max_active_tendons": 2
+  },
+  "canonical_phase3_model": {
+    "model_path": "phase3_last_16_03_2026\\nn_model.pt",
+    "x_scaler_path": "phase3_last_16_03_2026\\x_scaler.pkl",
+    "y_scaler_path": "phase3_last_16_03_2026\\y_scaler.pkl"
+  },
+  "real_model_parameters": {
+    "alpha_per_m": 3.5,
+    "beta_rad_per_m": 3.5,
+    "offset": [
+      0.5,
+      0.5,
+      0.3
+    ],
+    "sigma_noise": 0.0,
+    "theta_max_deg": 95.0
+  },
+  "metrics": [
+    {
+      "method": "PCC IK",
+      "N": 50,
+      "MAE_norm": 1.8216364017916704,
+      "RMSE_norm": 2.107236283510756,
+      "Median_norm": 1.5885858579739458,
+      "P95_norm": 3.9138064538659405,
+      "MAX_norm": 4.332031724903702,
+      "MAE_X": 0.8285839259017422,
+      "RMSE_X": 0.9921908725246598,
+      "MAX_abs_X": 2.096293592529415,
+      "MAE_Y": 1.0152501513113152,
+      "RMSE_Y": 1.3179351325471869,
+      "MAX_abs_Y": 3.14691737313467,
+      "MAE_Z": 1.0018670880872134,
+      "RMSE_Z": 1.3111250944973967,
+      "MAX_abs_Z": 2.9146847495808146
+    },
+    {
+      "method": "PCC+NN IK",
+      "N": 50,
+      "MAE_norm": 0.049033195389198786,
+      "RMSE_norm": 0.0568825858816538,
+      "Median_norm": 0.04424942997992154,
+      "P95_norm": 0.09200964913929789,
+      "MAX_norm": 0.12745174377115628,
+      "MAE_X": 0.029381566960496323,
+      "RMSE_X": 0.03945126839080555,
+      "MAX_abs_X": 0.11677956328221839,
+      "MAE_Y": 0.02516281935599662,
+      "RMSE_Y": 0.03299720381777846,
+      "MAX_abs_Y": 0.07657873601949916,
+      "MAE_Z": 0.020104786655071222,
+      "RMSE_Z": 0.02429836494804399,
+      "MAX_abs_Z": 0.07074701574224207
+    }
+  ],
+  "boundary_metrics": [
+    {
+      "method": "PCC IK",
+      "N": 15,
+      "MAE_norm": 2.779447569048123,
+      "RMSE_norm": 3.020521404205069,
+      "Median_norm": 2.8801552247191933,
+      "P95_norm": 4.299494278927299,
+      "MAX_norm": 4.332031724903702,
+      "MAE_X": 0.9420803381196828,
+      "RMSE_X": 1.1518906150075379,
+      "MAX_abs_X": 2.096293592529415,
+      "MAE_Y": 1.6111195912619318,
+      "RMSE_Y": 1.930666283324328,
+      "MAX_abs_Y": 3.14691737313467,
+      "MAE_Z": 1.8569923817145575,
+      "RMSE_Z": 2.017232080538366,
+      "MAX_abs_Z": 2.9146847495808146
+    },
+    {
+      "method": "PCC+NN IK",
+      "N": 15,
+      "MAE_norm": 0.03387358047854438,
+      "RMSE_norm": 0.040064484802268076,
+      "Median_norm": 0.03328485721403153,
+      "P95_norm": 0.06403752125108633,
+      "MAX_norm": 0.08870815079365423,
+      "MAE_X": 0.01949203573991134,
+      "RMSE_X": 0.023859358960258637,
+      "MAX_abs_X": 0.05303416057525112,
+      "MAE_Y": 0.012067624085716962,
+      "RMSE_Y": 0.014635519831911827,
+      "MAX_abs_Y": 0.025842320382764683,
+      "MAE_Z": 0.022971966501215017,
+      "RMSE_Z": 0.028665231408910877,
+      "MAX_abs_Z": 0.07074701574224207
+    }
+  ],
+  "ik_solver_success_counts": {
+    "PCC IK": 50,
+    "PCC+NN IK": 50
+  }
+}

@@ -29,7 +29,7 @@ REAL_MODEL_PARAMS = {
 }
 
 
-# Configure real model (if available)
+# Configure the synthetic reference model.
 def apply_real_model_params():
     real.alpha_per_m = REAL_MODEL_PARAMS["alpha_per_m"]
     real.beta_rad_per_m = REAL_MODEL_PARAMS["beta_rad_per_m"]
@@ -93,7 +93,7 @@ def pcc_tip_xyz(dl1, dl2, dl3):
     return float(X[-1]), float(Y[-1]), float(Z[-1])
 
 
-# Real model tip position
+# Synthetic reference model tip position
 def real_tip_xyz(dl1, dl2, dl3, enforce_max2: bool):
     try:
         x, y, z, _theta = real.real_forward(
@@ -105,7 +105,7 @@ def real_tip_xyz(dl1, dl2, dl3, enforce_max2: bool):
     return float(x), float(y), float(z)
 
 
-# Generate dataset: dl → (PCC, REAL, error)
+# Generate dataset: dl to (PCC, synthetic reference, residual).
 def generate_dataset():
     apply_real_model_params()
     np.random.seed(SEED)

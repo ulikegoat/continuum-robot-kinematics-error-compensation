@@ -1,8 +1,6 @@
-import numpy as np
-import pcc_model as pcc
-
 """
-REAL model = PCC + controlled deviations:
+Synthetic reference model = PCC + controlled deviations.
+It is not identified from a physical robot:
 - curvature nonlinearity
 - plane asymmetry
 - bend saturation (theta_max)
@@ -15,6 +13,9 @@ kappa         : [1/mm]
 theta         : [rad]
 XYZ           : [mm]
 """
+
+import numpy as np
+import pcc_model as pcc
 
 # Deviation parameters
 alpha_per_m = 0.05
