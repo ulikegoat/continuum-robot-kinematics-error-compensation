@@ -1,0 +1,11 @@
+{
+  "verified": false,
+  "provenance": "Replace with independently measured calibration, date, apparatus and uncertainty. Do not simply set verified=true.",
+  "measurement_units_to_mm": 1.0,
+  "dataset_columns_in_pcc_tendon_order": [0, 1, 2],
+  "backbone_length_mm": 110.0,
+  "routing_radius_mm": 5.0,
+  "position_marker": "tip",
+  "pcc_to_measurement_rotation": null,
+  "pcc_to_measurement_translation_mm": null
+}

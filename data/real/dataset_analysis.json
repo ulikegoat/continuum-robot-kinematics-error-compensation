@@ -1,0 +1,73 @@
+{
+  "source": "D:\\workspace_dp\\data\\real\\Dataset-Actions-Positions.txt",
+  "source_sha256": "baffabb280744621d820f95beb2e7ad1c05f7b795bed7da3d16993a811d284c3",
+  "rows": 30250,
+  "unique_configurations": 30250,
+  "exact_duplicate_extra_rows": 0,
+  "duplicate_configuration_extra_rows": 0,
+  "nan_by_column": {
+    "l1": 0,
+    "l2": 0,
+    "l3": 0,
+    "x_real": 0,
+    "y_real": 0,
+    "z_real": 0
+  },
+  "inf_by_column": {
+    "l1": 0,
+    "l2": 0,
+    "l3": 0,
+    "x_real": 0,
+    "y_real": 0,
+    "z_real": 0
+  },
+  "valid_rows": 30250,
+  "invalid_rows": 0,
+  "ranges_source_units": {
+    "l1": [
+      0.0,
+      100.0
+    ],
+    "l2": [
+      0.0,
+      100.0
+    ],
+    "l3": [
+      0.0,
+      100.0
+    ],
+    "x_real": [
+      -108.148,
+      19.18887
+    ],
+    "y_real": [
+      -144.3546,
+      -92.04597
+    ],
+    "z_real": [
+      204.5728,
+      342.6383
+    ]
+  },
+  "missing_nonzero_plane_grid_configurations": 50,
+  "zero_configuration_present": false,
+  "expected_grid_assumption": "Union of three integer 0..100 two-tendon planes, excluding origin",
+  "command_to_mm": 0.1,
+  "position_to_mm_assumption": 1.0,
+  "flagged_rows": 267,
+  "outlier_rule": "distance from componentwise median of immediate neighbours > max(1 mm, median + 6*1.4826*MAD)",
+  "outlier_threshold_mm": 1.0,
+  "outlier_median_mm": 0.11568905519621436,
+  "outlier_mad_mm": 0.047758718085373165,
+  "outlier_caution": "Global descriptive flags may include mechanical jumps. Clean sensitivity analysis is conditional on these flags; full test set remains primary.",
+  "active_tendon_counts": {
+    "2": 29950,
+    "1": 300
+  },
+  "neighbour_jump_percentiles_mm": {
+    "50": 0.8061943723436054,
+    "95": 1.0943461593755783,
+    "99": 2.1568599052004385,
+    "100": 6.311933503776798
+  }
+}

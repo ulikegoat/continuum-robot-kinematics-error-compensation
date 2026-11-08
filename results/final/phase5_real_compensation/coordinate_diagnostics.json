@@ -1,0 +1,226 @@
+{
+  "status": "unregistered; numerical diagnostics are NOT physical PCC error metrics",
+  "position_unit_assumption": "mm; not independently verified",
+  "pcc_geometry": {
+    "L_mm": 110.0,
+    "d_mm": 5.0
+  },
+  "pcc_zero": [
+    0.0,
+    0.0,
+    110.0
+  ],
+  "near_zero_measurements": [
+    {
+      "row_id": 0,
+      "l1": 0,
+      "l2": 0,
+      "l3": 1,
+      "x_real": -43.06682,
+      "y_real": -144.2242,
+      "z_real": 276.5916
+    },
+    {
+      "row_id": 100,
+      "l1": 0,
+      "l2": 1,
+      "l3": 0,
+      "x_real": -43.67575,
+      "y_real": -144.2628,
+      "z_real": 276.7679
+    },
+    {
+      "row_id": 10200,
+      "l1": 1,
+      "l2": 0,
+      "l3": 0,
+      "x_real": -42.74495,
+      "y_real": -144.2724,
+      "z_real": 277.2029
+    }
+  ],
+  "unaligned_coordinate_distance_rmse": 230.15354013962468,
+  "rigid_fits_diagnostic_only": [
+    {
+      "tendon_order": [
+        0,
+        1,
+        2
+      ],
+      "diagnostic_rotation_column_convention": [
+        [
+          0.4209835963289035,
+          -0.9062808987377279,
+          -0.037785502578625736
+        ],
+        [
+          -0.00207615512357967,
+          -0.04261936424912194,
+          0.9990892249298371
+        ],
+        [
+          -0.9070658747863276,
+          -0.42052172639964375,
+          -0.01982363296616367
+        ]
+      ],
+      "diagnostic_translation_mm_assumption": [
+        -39.81311412441673,
+        -219.83707733765084,
+        276.8056580349548
+      ],
+      "global_fit_rmse_mm_assumption": 19.727865739773506
+    },
+    {
+      "tendon_order": [
+        0,
+        2,
+        1
+      ],
+      "diagnostic_rotation_column_convention": [
+        [
+          -0.42079520725449,
+          -0.906506227127335,
+          0.03431987370336956
+        ],
+        [
+          -0.0031451055729236604,
+          -0.03637431915759344,
+          -0.9993332863548361
+        ],
+        [
+          0.9071502090958179,
+          -0.4206225969740404,
+          0.012455081381832307
+        ]
+      ],
+      "diagnostic_translation_mm_assumption": [
+        -46.734876159625024,
+        -27.998329907526085,
+        273.70705996862614
+      ],
+      "global_fit_rmse_mm_assumption": 4.958635307587278
+    },
+    {
+      "tendon_order": [
+        1,
+        0,
+        2
+      ],
+      "diagnostic_rotation_column_convention": [
+        [
+          0.9954550250083035,
+          0.08883377429054118,
+          0.03431987370337025
+        ],
+        [
+          0.033073637222301534,
+          0.015463418255059463,
+          -0.9993332863548355
+        ],
+        [
+          -0.08930525016260626,
+          0.9959264246123634,
+          0.012455081381831015
+        ]
+      ],
+      "diagnostic_translation_mm_assumption": [
+        -46.734876159624974,
+        -27.998329907526127,
+        273.70705996862625
+      ],
+      "global_fit_rmse_mm_assumption": 4.9586353075872855
+    },
+    {
+      "tendon_order": [
+        1,
+        2,
+        0
+      ],
+      "diagnostic_rotation_column_convention": [
+        [
+          -0.9953540794359165,
+          0.08855796037150007,
+          -0.03778550257862618
+        ],
+        [
+          -0.0358713745710925,
+          0.02310768520377828,
+          0.9990892249298382
+        ],
+        [
+          0.0893504394877827,
+          0.9958029536707365,
+          -0.019823632966163577
+        ]
+      ],
+      "diagnostic_translation_mm_assumption": [
+        -39.81311412441668,
+        -219.83707733765084,
+        276.8056580349548
+      ],
+      "global_fit_rmse_mm_assumption": 19.727865739773513
+    },
+    {
+      "tendon_order": [
+        2,
+        0,
+        1
+      ],
+      "diagnostic_rotation_column_convention": [
+        [
+          0.5743704831070129,
+          0.8177229383662281,
+          -0.03778550257862596
+        ],
+        [
+          0.037947529694671515,
+          0.01951167904534418,
+          0.9990892249298384
+        ],
+        [
+          0.8177154352985451,
+          -0.5752812272710923,
+          -0.01982363296616323
+        ]
+      ],
+      "diagnostic_translation_mm_assumption": [
+        -39.81311412441664,
+        -219.83707733765095,
+        276.80565803495483
+      ],
+      "global_fit_rmse_mm_assumption": 19.727865739773513
+    },
+    {
+      "tendon_order": [
+        2,
+        1,
+        0
+      ],
+      "diagnostic_rotation_column_convention": [
+        [
+          -0.5746598177538134,
+          0.8176724528367935,
+          0.03431987370336865
+        ],
+        [
+          -0.029928531649375503,
+          0.02091090090253261,
+          -0.9993332863548356
+        ],
+        [
+          -0.8178449589332107,
+          -0.5753038276383233,
+          0.012455081381831155
+        ]
+      ],
+      "diagnostic_translation_mm_assumption": [
+        -46.7348761596249,
+        -27.998329907526227,
+        273.70705996862625
+      ],
+      "global_fit_rmse_mm_assumption": 4.958635307587298
+    }
+  ],
+  "warning": "Global fitting confounds geometry errors with coordinate alignment and uses all measurements. These transforms must not be used for held-out model evaluation."
+}
