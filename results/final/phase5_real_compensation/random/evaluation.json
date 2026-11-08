@@ -1,0 +1,8 @@
+{
+  "mode": "loaded models; no retraining",
+  "test_ids_identical_for_variants": true,
+  "prediction_dataset": "D:\\workspace_dp\\data\\real\\experiments\\random\\real_vs_pcc.csv",
+  "dataset_sha256": "010b5fcff1b8cfd69f08019cc05ff547208b68348bda484df8c593280b616d84",
+  "units": "mm",
+  "error": "registered PCC + predicted residual - measurement"
+}

@@ -1,0 +1,8 @@
+experiment,seed,train,validation,test
+random,42,21174,4538,4538
+sparse_2,42,6481,1144,22625
+sparse_5,42,1062,188,29000
+sparse_10,42,276,49,29925
+region_1,42,25337,4472,441
+region_2,42,25337,4472,441
+region_3,42,25337,4472,441

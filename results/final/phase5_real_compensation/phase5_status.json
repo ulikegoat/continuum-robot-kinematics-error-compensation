@@ -1,0 +1,14 @@
+{
+  "status": "complete",
+  "real_models_trained": true,
+  "experiments": [
+    "random",
+    "region_1",
+    "region_2",
+    "region_3",
+    "sparse_10",
+    "sparse_2",
+    "sparse_5"
+  ],
+  "missing_figures": []
+}

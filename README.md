@@ -96,7 +96,9 @@ python -m continuum_robot.phase4.evaluate_extended --plots-only --out-dir result
 
 `--quick` is a short pilot with fitting-pool sizes 500, 1000, 2000 and all three architectures. `--full` covers all six requested sizes through 20,000 and trains longer. The results below are from a completed **full** run. These commands run experiments and write outputs; none runs automatically. The summer noise study only **evaluates** the canonical model at five noise levels; dataset-size, range, and architecture studies train separate experimental NNs and do not overwrite the canonical model.
 
-## Additional synthetic experiments
+## Phase 5: summer synthetic validation and additional experiments
+
+Phase 5 is the summer work plan: final repository documentation and methodology diagram, final Phase 3/4 tables and figures, and additional synthetic experiments on dataset size, noise, range generalisation and network architecture. The existing final outputs below belong to this phase. Phase 6 is the subsequent evaluation using physical robot measurements.
 
 `continuum_robot.experiments.summer_synthetic_experiments` produces four studies: (A) fitting-pool size, using an independent fixed test set; (B) Gaussian noise sigma 0, 0.2, 0.5, 0.8, and 1.0 mm, evaluating the unchanged canonical NN; (C) interpolation with training commands in 0-8 mm versus extrapolation to active tendon shortenings in (8,10] mm; and (D) 32-32, 128-64, and 256-128-64 hidden-layer architectures on the same split. Experimental NN inputs are the three shortenings plus activity indicators, and outputs are Cartesian residuals. Test sets are independent of training/validation sets; normalization is fit only on training data. The full run is intended for final thesis tables, while quick mode is a pilot. The script records the training or evaluation-only mode in `summary.json`.
 
@@ -236,6 +238,89 @@ Architecture comparison, separately trained experimental NNs on the same test se
 - `synthetic_reference.py` is used only for target generation and final evaluation.
 - The deterministic Phase 4 benchmark evaluates systematic compensated-control accuracy.
 - The noisy Phase 4 benchmark checks robustness under Gaussian measurement noise.
+
+## Phase 6: physical robot measurements
+
+The physical measurement pipeline is under `src/continuum_robot/phase5/`. The module and output paths retain the technical name `phase5` used inside the supplied experimental specification and the initial implementation; the thesis stage is Phase 6. This naming compatibility does not change experiment semantics. The pipeline reuses the existing PCC implementation, Cartesian error metrics, Phase 3 `FeedForwardNN`, and thesis plotting style. The byte-identical supplied source is retained in `data/real/Dataset-Actions-Positions.txt`; every processed row retains its original zero-based `row_id`.
+
+The source XYZ frame is not specified in the supplied documents. Near-zero measured XYZ is approximately `(-43,-144,277)`, whereas the PCC straight tip is `(0,0,110)` mm. A whole-dataset diagnostic rigid fit gives RMSE 19.727866 with nominal cable order, or 4.958635 for alternative cable permutations. These whole-dataset fits were exploratory and are not reported as held-out PCC error. The physical experiments use **train-only empirical registration**, described in [coordinate conventions](data/real/calibration_required.md); the output [research answers](results/final/phase5_real_compensation/research_answers.md) reports the identified PCC baseline.
+
+Run all seven physical-data experiments with separate training-only registration for each split:
+
+```powershell
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.empirical_registration --seed 42 --epochs 300
+```
+
+This chooses the tendon permutation and rotation/reflection using validation rows after fitting translation and orientation on training rows. Test XYZ values are excluded from fitting and model selection. The assumed XYZ unit is millimetres; no scale is fitted. Every candidate registration, selected transform, exact row IDs and provenance are saved under `data/real/experiments/<experiment>/`. The resulting PCC baseline is identified from physical data, and should be described as **train-registered PCC** in the thesis.
+
+All seven runs completed with seed 42 and up to 300 training epochs. Test RMSE [mm]:
+
+| Test protocol | Registered PCC | Ridge3 | FFNN |
+|---|---:|---:|---:|
+| Random interpolation, 4,538 test positions | 4.970 | 1.048 | 0.389 |
+| Sparse grid, 0.2 mm | 4.950 | 1.022 | 0.537 |
+| Sparse grid, 0.5 mm | 4.960 | 1.037 | 0.667 |
+| Sparse grid, 1.0 mm | 4.972 | 1.068 | 0.964 |
+| Held-out square, plane 1 | 3.016 | 0.339 | 0.162 |
+| Held-out square, plane 2 | 4.234 | 0.840 | 0.280 |
+| Held-out square, plane 3 | 3.221 | 1.168 | 0.277 |
+
+Full metrics including Linear and Ridge2, sample sizes and axiswise errors are in [all physical-data metrics](results/final/phase5_real_compensation/all_metrics.csv). Their position predictions, figures, scalers and trained models are saved per experiment. Cable permutations are geometrically symmetric under arbitrary rigid rotations/reflections; validation scores cannot prove the physical cable numbering. Each run stores its selected internal convention.
+
+Verified facts from the supplied physical measurements:
+
+| Property | Result |
+|---|---:|
+| Rows / unique configurations | 30,250 / 30,250 |
+| Duplicate configurations / NaN / Inf | 0 / 0 / 0 |
+| Missing nonzero configurations in the union of three full integer planes | 50 |
+| Descriptively flagged measurements (retained) | 267 (0.883%) |
+| Median / P95 / maximum neighbour jump, assuming mm | 0.806194 / 1.094346 / 6.311934 |
+
+Missing commands are `(k,2k,0)` for `k=1..50`. There is no `(0,0,0)` measurement. Input conversion is `shortening_mm = command / 10`. Cartesian units still need confirmation. Flags use distance from the componentwise median of immediate neighbours, threshold `max(1 mm, median + 6*1.4826*MAD)`. Flags can represent tracking issues, real mechanical jumps, or unusual valid measurements; no flagged source row is deleted. The median and MAD, full neighbour-edge list, missing-command list and source SHA256 are saved in `data/real/`.
+
+Commands from the repository root (PowerShell):
+
+```powershell
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.analyze_real_dataset
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.prepare_residual_dataset
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
+
+The analysis command writes measurement-workspace/QA figures and exact split indices. The empirical runner above additionally writes registered PCC positions and residual targets separately for each experiment. The tests use synthetic fixtures with a known rotation, translation and cable permutation, in temporary directories; fixture metrics are never thesis evidence.
+
+Fill `data/real/calibration.json` from [the schema example](data/real/calibration.example.json) using verified external information. It declares source position units, physical geometry, cable numbering, tracked tip and the orthogonal transform `measurement_mm = R @ PCC_mm + t_mm`. If the confirmed physical geometry differs from 110/5 mm or the marker is offset from the tip, those modelling details must first be resolved. Calibration fitting on validation/test positions is forbidden. With that calibration supplied, run the entire physical experiment pipeline:
+
+```powershell
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.pipeline run --calibration data/real/calibration.json --seed 42 --epochs 300
+```
+
+Or execute separate reproducible stages:
+
+```powershell
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.generate_pcc_predictions --calibration data/real/calibration.json
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.prepare_residual_dataset --seed 42
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.train_real_residual_models --seed 42 --epochs 300
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.eval_random_split
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.eval_sparse_grid
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.eval_region_holdout
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.plot_phase5_results
+```
+
+Evaluation and plotting load saved models/predictions without retraining. You can select one run using `pipeline train --experiment sparse_5`. Hyperparameters: FFNN hidden layers 215/68 (same as the Phase 3 default), three shortening inputs, ReLU and three linear residual outputs, Adam learning rate 0.001, batch 256, max 300 epochs, validation early stopping after 30 epochs without improvement. Ridge degrees 2 and 3 select alpha from `[0.0001,0.01,1,100]` on validation data only. Input/output scalers and polynomial-feature scalers are fitted exclusively on actual training rows. All model comparisons share identical split/test IDs.
+
+The seven protocols are: 70/15/15 random interpolation; training spacings 0.2/0.5/1.0 mm (15% of the coarse-grid pool reserved for validation, every off-grid valid row reserved for testing); and a held-out 4..6 mm square in each two-tendon plane (15% of the outside-region pool reserved for validation). The held-out region is excluded from both training and validation. None of these protocols establishes performance outside the measured actuator domain.
+
+Each protocol trains on all valid training rows and additionally on unflagged training rows as a sensitivity run. Both variants are evaluated on the exact same full test rows and on the same unflagged test subset. The full-data results are primary. Since QA flags are derived from global measurement neighbourhoods, filtered results are descriptive sensitivity analyses conditioned on those flags, not an independent data-cleaning generalisation claim.
+
+Outputs:
+
+- `data/real/`: raw/flagged CSV, QA report and unregistered PCC diagnostics. `data/real/experiments/<experiment>/` contains registered `real_vs_pcc.csv`, residual targets and transform provenance for each physical experiment.
+- `artifacts/phase5_models/<experiment>/<variant>/`: scalers, Linear/Ridge2/Ridge3 models, FFNN best checkpoint, training curves, actual training/validation IDs, hyperparameters and dependency versions.
+- `results/final/phase5_real_compensation/`: exact split JSON, metrics CSV/LaTeX, per-row positions/residual predictions, per-axis RMSE, workspace/plane maps with shared colour limits, CDF/histograms, coordinate comparisons, sparse-grid accuracy and held-out-region figures.
+- `research_answers.md`: numerical answers to RQ1-RQ5 for the empirical-registration protocol and its methodological limits.
+
+The protocol uses one fixed seed and static measured positions. It does not establish repeatability, hysteresis behaviour, statistical significance between nearly tied models, three-active-tendon accuracy, or physical IK performance. Those limitations remain explicit in the report.
 
 ## Legacy / previous benchmark outputs
 

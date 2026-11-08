@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "continuum-robot-kinematics-error-compensation"
 version = "0.1.0"
-description = "Synthetic continuum-robot kinematics and residual compensation"
+description = "Continuum-robot kinematics and synthetic/experimental residual compensation"
 requires-python = ">=3.10"
 dynamic = ["dependencies"]
 

@@ -1,0 +1,27 @@
+{
+  "physical_phase_status": "complete_with_train_only_empirical_registration",
+  "physical_models_trained": true,
+  "source_sha256": "baffabb280744621d820f95beb2e7ad1c05f7b795bed7da3d16993a811d284c3",
+  "source_matches_retained_copy": true,
+  "verification_command": ".\\.venv\\Scripts\\python.exe -m unittest discover -s tests -v",
+  "tests_passed": 4,
+  "last_test_run_seconds": 23.553,
+  "test_data_kind": "Synthetic fixtures with an explicitly known external coordinate transform, never physical results",
+  "fixture_experiments": ["random", "sparse_2", "sparse_5", "sparse_10", "region_1", "region_2", "region_3"],
+  "fixture_epochs_per_nn": 3,
+  "checks": [
+    "Calibration gate rejects missing or unverified transforms and nonorthogonal matrices",
+    "Known rotation, translation and tendon permutation map zero pose correctly",
+    "Analysis flags an injected spike and nonfinite measurement without modifying source",
+    "Seven split definitions exclude test points from training/validation",
+    "Sparse-grid and contiguous-region membership matches protocol",
+    "Input scaler mean equals actual training mean",
+    "Evaluation preserves every trained artifact hash and exact test IDs",
+    "PCC prediction error agrees with direct Euclidean error calculation",
+    "All seven experiment plot suites and aggregate reports render successfully",
+    "Independent physical workspace and QA figures visually inspected",
+    "Train-only registration gives identical transform when test-only XYZ values are altered",
+    "Physical runs completed all seven experiment protocols with 300 maximum epochs and saved metrics, models, predictions and figures",
+    "git diff --check passes"
+  ]
+}
