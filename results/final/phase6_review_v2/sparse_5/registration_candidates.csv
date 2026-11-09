@@ -1,0 +1,19 @@
+method,order,validation_RMSE_mm
+translation,"[0, 1, 2]",62.644063728232624
+proper_rigid,"[0, 1, 2]",21.139580396109093
+reflected_rigid,"[0, 1, 2]",5.183723964390892
+translation,"[0, 2, 1]",74.10446193347539
+proper_rigid,"[0, 2, 1]",5.183723964390901
+reflected_rigid,"[0, 2, 1]",21.139580396109086
+translation,"[1, 0, 2]",48.54961459395853
+proper_rigid,"[1, 0, 2]",5.183723964390889
+reflected_rigid,"[1, 0, 2]",21.139580396109093
+translation,"[1, 2, 0]",82.25135402046715
+proper_rigid,"[1, 2, 0]",21.13958039610909
+reflected_rigid,"[1, 2, 0]",5.18372396439089
+translation,"[2, 0, 1]",55.75237775120037
+proper_rigid,"[2, 0, 1]",21.13958039610909
+reflected_rigid,"[2, 0, 1]",5.1837239643908966
+translation,"[2, 1, 0]",77.13206355224663
+proper_rigid,"[2, 1, 0]",5.183723964390886
+reflected_rigid,"[2, 1, 0]",21.13958039610909
