@@ -239,7 +239,43 @@ Architecture comparison, separately trained experimental NNs on the same test se
 - The deterministic Phase 4 benchmark evaluates systematic compensated-control accuracy.
 - The noisy Phase 4 benchmark checks robustness under Gaussian measurement noise.
 
-## Phase 6: physical robot measurements
+## Phase 6: reviewed physical-data protocol (v2)
+
+The reviewed protocol is implemented in `src/continuum_robot/phase5/review_v2.py`. **It has not been run on the physical dataset yet.** Its metric values must be taken only from `results/final/phase6_review_v2/` after the manual run below. The existing `phase5_real_compensation` results and numbers further down this page are an **archival v1 protocol**, not outcomes of v2. Earlier synthetic Phases 1–5 and the original physical measurements remain unchanged.
+
+The v2 protocol reads the byte-preserved `data/real/Dataset-Actions-Positions.txt`, checks that processed XYZ values and row IDs exactly match it, and reuses the seven saved train/validation/test splits. It rejects a changed source or split instead of silently regenerating anything. Command values are divided by 10 to obtain tendon shortening in mm. XYZ is provisionally assumed to be in mm. Its origin, orientation, tracked marker and physical tendon numbering are not independently verified.
+
+For **each split separately**, v2 fits candidate PCC registrations on training XYZ only: translation, proper rigid rotation plus translation, and reflected orthogonal rotation plus translation, each with six tendon permutations. It selects a candidate by validation RMSE. Scale is fixed at 1; geometry stays at the existing PCC values (110 mm backbone, 5 mm routing parameter). Tendon permutations can be geometrically equivalent under a free orthogonal mapping, so the selected order is an internal convention, not evidence of physical cable labels. The baseline is **train-registered PCC**, not a fully independent analytical calibration.
+
+All residual models share the same registered PCC, train/validation/test IDs and train-fitted input/output scalers. V2 compares Linear, Polynomial Ridge degrees 2 and 3, distance-weighted KNN and FFNN (64/64 versus the previous 215/68 hidden layers). Ridge alpha, KNN neighbour count, NN architecture and NN checkpoint are selected on validation positions; NN early stopping uses validation RMSE in mm. The final test set is evaluated once. QA flags remain descriptive and never select v2 training rows or hyperparameters: the archived v1 `clean_train` sensitivity run used flags derived from the global neighbourhood, so it cannot support a strict leakage-free clean-training claim.
+
+From the repository root in PowerShell, run the read-only input check first:
+
+```powershell
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.review_v2 check
+```
+
+Then **manually** start the long physical-data experiments when ready:
+
+```powershell
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.review_v2 run --seed 42 --epochs 300
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.review_v2 report
+.\.venv\Scripts\python.exe -m continuum_robot.phase5.review_v2 compare
+```
+
+`run` never executes on import or during `check`. `report` and `compare` only load existing predictions and models; they do not retrain. If an experiment already exists, `run` refuses to overwrite it. After an interrupted run, run each missing experiment with `--experiment random`, `--experiment sparse_2`, `--experiment sparse_5`, `--experiment sparse_10`, `--experiment region_1`, `--experiment region_2` or `--experiment region_3`. For an intentional fresh protocol, supply new **both** `--output` and `--models` directories; retain the old run for traceability.
+
+V2 outputs include each experiment's complete registration candidate table, selected transform and row IDs, model selection scores, scalers, fitted models, per-row predictions, CSV/LaTeX metrics, per-plane signed-bias/error diagnostics, 3D test workspace, comparable plane error maps, error distributions, coordinate comparisons and NN training curves. `report` writes `all_metrics.csv`, `all_metrics.tex`, `sparse_grid_accuracy.png` and `research_answers.md`; `compare` writes `paired_legacy_comparison.csv` after verifying identical physical test rows and positions. A numerical improvement is **not presumed**. The v2 code is designed to test whether better registration choice, KNN and FFNN architecture selection improve held-out accuracy; the comparison file gives the measured answer after execution.
+
+The historical dataset audit found 30,250 unique physical configurations, 50 missing expected grid commands, no NaN/Inf or duplicate commands, and 267 descriptive QA flags. The raw measurements are never filtered or augmented in v2. The available data contain static positions with at most two active tendons; they cannot establish repeatability, hysteresis, three-tendon accuracy, externally calibrated PCC error, physical IK performance or statistical significance across independent experimental repetitions.
+
+Fast source-only checks (no physical training or regeneration):
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest tests.test_phase6_review_v2 -v
+```
+
+### Archived Phase 6 physical-data protocol (v1)
 
 The physical measurement pipeline is under `src/continuum_robot/phase5/`. The module and output paths retain the technical name `phase5` used inside the supplied experimental specification and the initial implementation; the thesis stage is Phase 6. This naming compatibility does not change experiment semantics. The pipeline reuses the existing PCC implementation, Cartesian error metrics, Phase 3 `FeedForwardNN`, and thesis plotting style. The byte-identical supplied source is retained in `data/real/Dataset-Actions-Positions.txt`; every processed row retains its original zero-based `row_id`.
 
