@@ -182,9 +182,9 @@ class PhysicalAdapter:
                 "frame_label": "Assumed measurement coordinates [mm]",
                 "warning": "Empirical train-only registration; sensor frame is not independently calibrated"}
 
-    def cloud(self, model_name: str, limit: int = 4500):
+    def cloud(self, model_name: str, limit: int | None = 750):
         frame = self.predictions
-        if len(frame) > limit:
+        if limit is not None and len(frame) > limit:
             frame = frame.iloc[np.linspace(0, len(frame) - 1, limit, dtype=int)]
         positions = frame[["x_real", "y_real", "z_real"]].to_numpy(float)
         error = frame[f"e_{model_name}"].to_numpy(float)

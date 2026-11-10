@@ -18,8 +18,9 @@ Python 3.11 or another supported version can be used. `PyOpenGL` is required by 
 1. Select **Synthetic demonstration** to compare PCC, deterministic synthetic reference, and the saved canonical Phase 3 NN. The physical dataset is not used in this mode.
 2. Select **Physical measurements** and an experiment. The GUI loads that experiment's v2 registration, scalers, model weights, metrics and test predictions together. Choose PCC, KNN or FFNN (or a regression baseline).
 3. Use **Go to test point** to select an actual physical endpoint observation. Moving the sliders to a command without a selected-test observation shows predictions and an explicit unavailable-measurement status.
-4. Rotate the 3D view by dragging; zoom with the wheel; pan with middle drag. Use the camera presets or **Fit view**. Press `R` for straight configuration and `F` to fit.
-5. Save an actual PNG screenshot using **Capture** or `Ctrl+Shift+S`. Save it under [`figures/gui/`](../figures/gui/), inspect it, then embed it in the main README if it renders correctly.
+4. Rotate the 3D view by dragging; zoom with the wheel; pan with middle drag. Use the camera presets, **Focus robot** (`F`) or **Fit workspace**. Camera framing remains stable while moving tendon sliders. Press `R` for the straight configuration.
+5. In the **DISPLAY** inspector group, choose cloud **Off**, sampled **Light** (default) or **Full**. The gray-to-copper scale reports the selected model's test error and clips at its 95th percentile; the measured endpoint marker is the selected test observation. Full renders every saved test endpoint in the 3D view and may be slower on some GPUs.
+6. Use the left rail to open **Robot**, **Compensation**, **Measurements** or the dedicated **Analysis** workspace. Save an actual application-only PNG using **Capture** or `Ctrl+Shift+S`, or use **Save 3D viewport PNG** for the OpenGL view alone. Save under [`figures/gui/`](../figures/gui/), inspect that the 3D scene appears, then embed the image in the main README.
 
 ## Validate saved result lineage
 
